@@ -50,7 +50,7 @@ inset: 0;
 pointer-events: none;
 z-index: 100;
 opacity: 0.35;
-background-image: url(“data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.16 0 0 0 0 0.10 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>”);
+background-image: url(“data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.16 0 0 0 0 0.10 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>”);
 mix-blend-mode: multiply;
 }
 
@@ -78,7 +78,7 @@ text-align: center;
 gap: 50px;
 }
 
-/* ───────── HEADER ───────── */
+/* HEADER */
 .ornament {
 font-family: ‘IM Fell English’, serif;
 font-style: italic;
@@ -90,7 +90,7 @@ text-transform: uppercase;
 animation: fadeIn 1.4s ease-out;
 }
 
-/* ───────── HERO BADGE ───────── */
+/* HERO BADGE */
 .badge-wrap {
 position: relative;
 animation: badgeIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
@@ -124,7 +124,7 @@ from { opacity: 0; transform: translateY(12px); }
 to { opacity: 1; transform: translateY(0); }
 }
 
-/* ───────── HERO TEXT ───────── */
+/* HERO TEXT */
 .hero-text {
 display: flex;
 flex-direction: column;
@@ -160,7 +160,7 @@ line-height: 1.45;
 opacity: 0.85;
 }
 
-/* ───────── ORNAMENTAL RULE ───────── */
+/* ORNAMENTAL RULE */
 .rule {
 display: flex;
 align-items: center;
@@ -187,7 +187,7 @@ font-size: 1.4rem;
 line-height: 1;
 }
 
-/* ───────── SIGNUP ───────── */
+/* SIGNUP */
 .signup {
 width: 100%;
 max-width: 460px;
@@ -217,7 +217,7 @@ transition: border-color 0.3s ease;
 border-bottom-color: var(–rose);
 }
 
-.signup-form input {
+.signup-form input[type=“email”] {
 flex: 1;
 background: transparent;
 border: none;
@@ -229,7 +229,7 @@ padding: 10px 4px;
 letter-spacing: 0.02em;
 }
 
-.signup-form input::placeholder {
+.signup-form input[type=“email”]::placeholder {
 color: var(–ink);
 opacity: 0.4;
 font-style: italic;
@@ -291,7 +291,14 @@ opacity: 0.55;
 letter-spacing: 0.04em;
 }
 
-/* ───────── FOOTER ───────── */
+/* Honeypot — invisible to humans, traps bots */
+.honeypot {
+position: absolute;
+left: -9999px;
+visibility: hidden;
+}
+
+/* FOOTER */
 footer {
 width: 100%;
 margin-top: auto;
@@ -355,7 +362,7 @@ opacity: 0.6;
 letter-spacing: 0.05em;
 }
 
-/* ───────── DECORATIVE BACKGROUND ROSES ───────── */
+/* DECORATIVE BACKGROUND ROSES */
 .deco-rose {
 position: fixed;
 z-index: 0;
@@ -377,15 +384,15 @@ width: 240px;
 transform: rotate(20deg);
 }
 
-/* ───────── RESPONSIVE ───────── */
+/* RESPONSIVE */
 @media (max-width: 600px) {
 main { padding: 50px 24px 32px; gap: 40px; }
 body::after { inset: 14px; }
 .footer-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
 .signup-form { flex-direction: column; gap: 0; border-bottom: none; }
-.signup-form input { border-bottom: 1.5px solid var(–moss-deep); padding: 12px 4px; }
+.signup-form input[type=“email”] { border-bottom: 1.5px solid var(–moss-deep); padding: 12px 4px; }
 .signup-form button { padding: 14px 0; align-self: center; }
-.signup-form:focus-within input { border-bottom-color: var(–rose); }
+.signup-form:focus-within input[type=“email”] { border-bottom-color: var(–rose); }
 .deco-rose { display: none; }
 }
 </style>
@@ -527,7 +534,21 @@ body::after { inset: 14px; }
 
   <section class="signup" id="signup">
     <p class="signup-prompt">Drop your email and we'll send a note when the doors are open.</p>
-    <form class="signup-form" id="signupForm" novalidate>
+    <form
+      class="signup-form"
+      id="signupForm"
+      name="signup"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      novalidate
+    >
+      <!-- Required by Netlify Forms -->
+      <input type="hidden" name="form-name" value="signup">
+      <!-- Honeypot field — invisible to humans, traps bots -->
+      <p class="honeypot" aria-hidden="true">
+        <label>Don't fill this in: <input name="bot-field"></label>
+      </p>
       <input
         type="email"
         name="email"
@@ -585,11 +606,29 @@ body::after { inset: 14px; }
       return;
     }
 
-    // TODO: wire up to email service (Mailchimp, ConvertKit, Buttondown, etc.)
-    // For now, just show the success state
-    console.log('Email captured:', email);
-    signup.classList.add('submitted');
-    success.classList.add('visible');
+    // Disable button while submitting
+    const button = form.querySelector('button');
+    button.disabled = true;
+
+    // Submit to Netlify Forms
+    const formData = new FormData(form);
+    const body = new URLSearchParams(formData).toString();
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Network error');
+      signup.classList.add('submitted');
+      success.classList.add('visible');
+    })
+    .catch(err => {
+      console.error('Form submission failed:', err);
+      button.disabled = false;
+      alert('Something went wrong — please try again or email hello@twoyorkshiremen.co.uk');
+    });
   });
 </script>
 
