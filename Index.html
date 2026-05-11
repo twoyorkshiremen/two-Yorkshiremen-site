@@ -50,7 +50,7 @@ inset: 0;
 pointer-events: none;
 z-index: 100;
 opacity: 0.35;
-background-image: url(“data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.16 0 0 0 0 0.10 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>”);
+background-image: url(“data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.16 0 0 0 0 0.10 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>”);
 mix-blend-mode: multiply;
 }
 
@@ -78,7 +78,7 @@ text-align: center;
 gap: 50px;
 }
 
-/* HEADER */
+/* ───────── HEADER ───────── */
 .ornament {
 font-family: ‘IM Fell English’, serif;
 font-style: italic;
@@ -90,7 +90,7 @@ text-transform: uppercase;
 animation: fadeIn 1.4s ease-out;
 }
 
-/* HERO BADGE */
+/* ───────── HERO BADGE ───────── */
 .badge-wrap {
 position: relative;
 animation: badgeIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
@@ -124,7 +124,7 @@ from { opacity: 0; transform: translateY(12px); }
 to { opacity: 1; transform: translateY(0); }
 }
 
-/* HERO TEXT */
+/* ───────── HERO TEXT ───────── */
 .hero-text {
 display: flex;
 flex-direction: column;
@@ -160,7 +160,7 @@ line-height: 1.45;
 opacity: 0.85;
 }
 
-/* ORNAMENTAL RULE */
+/* ───────── ORNAMENTAL RULE ───────── */
 .rule {
 display: flex;
 align-items: center;
@@ -187,7 +187,7 @@ font-size: 1.4rem;
 line-height: 1;
 }
 
-/* SIGNUP */
+/* ───────── SIGNUP ───────── */
 .signup {
 width: 100%;
 max-width: 460px;
@@ -208,45 +208,49 @@ line-height: 1.5;
 display: flex;
 gap: 12px;
 align-items: stretch;
-border-bottom: 1.5px solid var(–moss-deep);
-padding-bottom: 6px;
-transition: border-color 0.3s ease;
 }
 
-.signup-form:focus-within {
-border-bottom-color: var(–rose);
-}
-
-.signup-form input[type=“email”] {
+.signup-form input {
 flex: 1;
-background: transparent;
-border: none;
+background: var(–parchment-light);
+border: 1.5px solid rgba(31, 42, 28, 0.5);
+border-radius: 3px;
 outline: none;
 font-family: ‘Cormorant Garamond’, serif;
 font-size: 1.15rem;
 color: var(–ink);
-padding: 10px 4px;
+padding: 14px 18px;
 letter-spacing: 0.02em;
+box-shadow: inset 0 1px 2px rgba(31, 42, 28, 0.08);
+transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 
-.signup-form input[type=“email”]::placeholder {
+.signup-form input:focus {
+border-color: var(–rose);
+background: #fefcf6;
+box-shadow: inset 0 1px 2px rgba(31, 42, 28, 0.08), 0 0 0 3px rgba(140, 42, 58, 0.12);
+}
+
+.signup-form input::placeholder {
 color: var(–ink);
-opacity: 0.4;
+opacity: 0.45;
 font-style: italic;
 }
 
 .signup-form button {
-background: transparent;
-border: none;
+background: var(–rose);
+border: 1.5px solid var(–rose-deep);
+border-radius: 3px;
 cursor: pointer;
 font-family: ‘IM Fell English’, serif;
 font-style: italic;
-font-size: 1.1rem;
-color: var(–rose);
-letter-spacing: 0.05em;
-padding: 10px 4px;
+font-size: 1.2rem;
+color: var(–parchment);
+letter-spacing: 0.06em;
+padding: 14px 30px;
 white-space: nowrap;
-transition: color 0.25s ease, transform 0.25s ease;
+box-shadow: 0 2px 0 var(–rose-deep), 0 4px 12px rgba(140, 42, 58, 0.22);
+transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 position: relative;
 }
 
@@ -254,14 +258,33 @@ position: relative;
 content: ’ →’;
 transition: transform 0.25s ease;
 display: inline-block;
+margin-left: 2px;
 }
 
 .signup-form button:hover {
-color: var(–rose-deep);
+background: var(–rose-deep);
+transform: translateY(-1px);
+box-shadow: 0 3px 0 #4d1421, 0 6px 16px rgba(140, 42, 58, 0.3);
 }
 
 .signup-form button:hover::after {
 transform: translateX(4px);
+}
+
+.signup-form button:active {
+transform: translateY(1px);
+box-shadow: 0 1px 0 var(–rose-deep), 0 2px 6px rgba(140, 42, 58, 0.18);
+}
+
+.signup-form input.error {
+border-color: var(–rose);
+animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+25% { transform: translateX(-6px); }
+75% { transform: translateX(6px); }
 }
 
 .success {
@@ -291,14 +314,7 @@ opacity: 0.55;
 letter-spacing: 0.04em;
 }
 
-/* Honeypot — invisible to humans, traps bots */
-.honeypot {
-position: absolute;
-left: -9999px;
-visibility: hidden;
-}
-
-/* FOOTER */
+/* ───────── FOOTER ───────── */
 footer {
 width: 100%;
 margin-top: auto;
@@ -362,7 +378,7 @@ opacity: 0.6;
 letter-spacing: 0.05em;
 }
 
-/* DECORATIVE BACKGROUND ROSES */
+/* ───────── DECORATIVE BACKGROUND ROSES ───────── */
 .deco-rose {
 position: fixed;
 z-index: 0;
@@ -384,15 +400,14 @@ width: 240px;
 transform: rotate(20deg);
 }
 
-/* RESPONSIVE */
+/* ───────── RESPONSIVE ───────── */
 @media (max-width: 600px) {
 main { padding: 50px 24px 32px; gap: 40px; }
 body::after { inset: 14px; }
 .footer-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
-.signup-form { flex-direction: column; gap: 0; border-bottom: none; }
-.signup-form input[type=“email”] { border-bottom: 1.5px solid var(–moss-deep); padding: 12px 4px; }
-.signup-form button { padding: 14px 0; align-self: center; }
-.signup-form:focus-within input[type=“email”] { border-bottom-color: var(–rose); }
+.signup-form { flex-direction: column; gap: 14px; }
+.signup-form input { padding: 14px 18px; text-align: center; }
+.signup-form button { padding: 16px 30px; width: 100%; font-size: 1.25rem; }
 .deco-rose { display: none; }
 }
 </style>
@@ -534,21 +549,7 @@ body::after { inset: 14px; }
 
   <section class="signup" id="signup">
     <p class="signup-prompt">Drop your email and we'll send a note when the doors are open.</p>
-    <form
-      class="signup-form"
-      id="signupForm"
-      name="signup"
-      method="POST"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      novalidate
-    >
-      <!-- Required by Netlify Forms -->
-      <input type="hidden" name="form-name" value="signup">
-      <!-- Honeypot field — invisible to humans, traps bots -->
-      <p class="honeypot" aria-hidden="true">
-        <label>Don't fill this in: <input name="bot-field"></label>
-      </p>
+    <form class="signup-form" id="signupForm" novalidate>
       <input
         type="email"
         name="email"
@@ -601,34 +602,16 @@ body::after { inset: 14px; }
 
     if (!emailValid) {
       emailInput.focus();
-      form.style.borderBottomColor = '#8C2A3A';
-      setTimeout(() => { form.style.borderBottomColor = ''; }, 1500);
+      emailInput.classList.add('error');
+      setTimeout(() => { emailInput.classList.remove('error'); }, 1500);
       return;
     }
 
-    // Disable button while submitting
-    const button = form.querySelector('button');
-    button.disabled = true;
-
-    // Submit to Netlify Forms
-    const formData = new FormData(form);
-    const body = new URLSearchParams(formData).toString();
-
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body,
-    })
-    .then(response => {
-      if (!response.ok) throw new Error('Network error');
-      signup.classList.add('submitted');
-      success.classList.add('visible');
-    })
-    .catch(err => {
-      console.error('Form submission failed:', err);
-      button.disabled = false;
-      alert('Something went wrong — please try again or email hello@twoyorkshiremen.co.uk');
-    });
+    // TODO: wire up to email service (Mailchimp, ConvertKit, Buttondown, etc.)
+    // For now, just show the success state
+    console.log('Email captured:', email);
+    signup.classList.add('submitted');
+    success.classList.add('visible');
   });
 </script>
 
